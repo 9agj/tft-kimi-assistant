@@ -24,3 +24,14 @@ local.properties
 signing.env
 *.jks
 *.p12
+
+# 内部交接与运维材料（不随仓库公开）
+项目交接文档_*.md
+项目交接文档_*.md.sha256
+docs/交接文档_*
+docs/交接辅助/
+docs/基线对齐_*
+docs/交接接收人回填表_*
+signing.env
+*.jks
+*.p12
