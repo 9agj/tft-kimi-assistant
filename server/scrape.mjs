@@ -118,6 +118,8 @@ async function main() {
     if (applied) {
       datatft = applied.doc
       console.log(`dataTFT: 攻略 ${applied.guided} 套 / 独有阵容 ${applied.added} 套`)
+      if (typeof applied.ageDays === 'number' && applied.ageDays > 7)
+        warnings.push(`dataTFT 攻略已 ${applied.ageDays} 天未更新`)
     }
   } catch (e) {
     warnings.push('dataTFT 合并跳过: ' + e.message)

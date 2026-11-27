@@ -315,12 +315,19 @@ export function applyDatatft({ comps, details, lk, root }) {
     added++
   }
 
+  // 攻略超过 7 天没更新就标记出来，让抓取日志能看见，不静默吃旧数据
+  const newest = Object.values(guides)
+    .map(g => Number(new Date(g.updateTime || 0)))
+    .filter(n => Number.isFinite(n) && n > 0)
+  const ageDays = newest.length ? Math.floor((Date.now() - Math.max(...newest)) / 86400000) : null
+
   const doc = {
     success: true,
     generatedAt: new Date().toISOString(),
+    guideAgeDays: ageDays,
     counts: { guides: Object.keys(guides).length, extra: extra.length },
     guides,
     extra,
   }
-  return { doc, added, guided }
+  return { doc, added, guided, ageDays }
 }

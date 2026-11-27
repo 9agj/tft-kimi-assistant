@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh TFT Kimi dataTFT guides twice a day
+
+[Timer]
+OnCalendar=*-*-* 02,14:10:00 Asia/Shanghai
+Persistent=true
+RandomizedDelaySec=0
+Unit=tft-kimi-datatft.service
+
+[Install]
+WantedBy=timers.target

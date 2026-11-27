@@ -1,0 +1,18 @@
+[Unit]
+Description=TFT Kimi dataTFT guides refresh (S19 teams + strategies)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Environment=KIMI_ROOT=/opt/tft-kimi
+EnvironmentFile=-/opt/tft-kimi/config/datatft.env
+Type=oneshot
+WorkingDirectory=/opt/tft-kimi
+ExecStart=/usr/bin/flock -n /opt/tft-kimi/data/datatft/fetch.lock /usr/bin/node /opt/tft-kimi/server/datatft.mjs
+TimeoutStartSec=45min
+Nice=10
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadOnlyPaths=/opt/tft-kimi
+ReadWritePaths=/opt/tft-kimi/data/datatft
