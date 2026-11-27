@@ -8,6 +8,21 @@ import {
 } from './constants'
 
 /**
+ * 数据源（dataTFT）自带档位：有就照抄，没有才用我们的百分位结果。
+ * 用户要求「和大数据网站一样的分级，不擅自分级」。
+ */
+function siteTierOf(comp: Comp): CompTier | null {
+  // 只有 dataTFT 抓来的阵容才用站点档位；MetaTFT 阵容仍按我们自己的百分位
+  if (comp.source !== 'datatft')
+    return null
+  const raw = comp.datatftTier ?? comp.tier
+  if (!raw)
+    return null
+  const t = String(raw).toUpperCase()
+  return t === 'S' || t === 'A' || t === 'B' || t === 'C' || t === 'D' ? t : null
+}
+
+/**
  * 阵容评级类型
  */
 type CompTier = 'S' | 'A' | 'B' | 'C' | 'D'
@@ -129,7 +144,10 @@ function calculateCompScore(comp: Comp): number {
   const firstPlaceScore = sigmoidTransform(firstPlaceNormalized, 8)
 
   // ========== 4. 选取率得分（权重 30%）==========
-  const pickRate = comp.pickRate || NORMALIZATION_CONFIG.pickRate.min
+  // 缺失选取率（如 dataTFT 独有阵容）时不参与评分，权重按其余三项重分配，
+  // 避免把“没有这个指标”当成“最低分”。
+  const hasPickRate = typeof comp.pickRate === 'number' && Number.isFinite(comp.pickRate)
+  const pickRate = hasPickRate ? comp.pickRate! : NORMALIZATION_CONFIG.pickRate.min
   const pickRateNormalized = normalize(
     pickRate,
     NORMALIZATION_CONFIG.pickRate.min,
@@ -138,11 +156,21 @@ function calculateCompScore(comp: Comp): number {
   const pickRateScore = logarithmicTransform(pickRateNormalized)
 
   // ========== 加权计算综合得分 ==========
+  const baseWeight = METRIC_WEIGHTS.avgPlace + METRIC_WEIGHTS.top4Rate + METRIC_WEIGHTS.firstPlaceRate
+  const weights = hasPickRate
+    ? METRIC_WEIGHTS
+    : {
+        avgPlace: METRIC_WEIGHTS.avgPlace / baseWeight,
+        top4Rate: METRIC_WEIGHTS.top4Rate / baseWeight,
+        firstPlaceRate: METRIC_WEIGHTS.firstPlaceRate / baseWeight,
+        pickRate: 0,
+      }
+
   const totalScore
-    = avgPlaceScore * METRIC_WEIGHTS.avgPlace
-      + top4Score * METRIC_WEIGHTS.top4Rate
-      + firstPlaceScore * METRIC_WEIGHTS.firstPlaceRate
-      + pickRateScore * METRIC_WEIGHTS.pickRate
+    = avgPlaceScore * weights.avgPlace
+      + top4Score * weights.top4Rate
+      + firstPlaceScore * weights.firstPlaceRate
+      + pickRateScore * weights.pickRate
 
   return Math.max(0, Math.min(100, totalScore))
 }
@@ -175,8 +203,10 @@ function getCompTier(_score: number, percentile: number): CompTier {
  * @returns 是否为低出场率阵容
  */
 function isLowPickrateComp(comp: Comp): boolean {
-  const pickRate = comp.pickRate || 0
-  return pickRate < LOW_PICK_RATE_THRESHOLD
+  // 没有选取率的阵容（dataTFT 独有）不按“低出场率”处理，否则会被折进折叠区
+  if (typeof comp.pickRate !== 'number' || !Number.isFinite(comp.pickRate))
+    return false
+  return comp.pickRate < LOW_PICK_RATE_THRESHOLD
 }
 
 /**
@@ -219,9 +249,12 @@ function enhanceComps(comps: Comp[]): EnhancedCompData[] {
     const percentile = (index + 1) / normalTotal
     const calculatedTier = getCompTier(item.score, percentile)
 
+    // dataTFT 独有阵容用站点自己的档位，不按我们的百分位重算（数据源给什么就显示什么）
+    const tier = siteTierOf(item.comp) ?? calculatedTier
+
     return {
       ...item.comp,
-      calculatedTier,
+      calculatedTier: tier,
       category: 'normal',
       score: item.score,
     }
@@ -242,9 +275,11 @@ function enhanceComps(comps: Comp[]): EnhancedCompData[] {
     const percentile = (index + 1) / lowPickrateTotal
     const calculatedTier = getCompTier(item.score, percentile)
 
+    const tier = siteTierOf(item.comp) ?? calculatedTier
+
     return {
       ...item.comp,
-      calculatedTier,
+      calculatedTier: tier,
       category: 'low_pickrate',
       score: item.score,
     }

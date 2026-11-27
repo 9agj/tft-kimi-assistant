@@ -4,6 +4,7 @@ import crypto from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 import { requireSet, transformComps, transformDetail, transformCatalog, deriveUnitItems } from './model.mjs'
 import { transformAugmentRanking, emptyAugmentRanking, AUGMENT_RANKING_URL } from './augment-ranking.mjs'
+import { applyDatatft } from './datatft-apply.mjs'
 
 const ROOT = process.env.KIMI_ROOT ?? '/opt/tft-kimi'
 const DATA = path.join(ROOT, 'data')
@@ -110,6 +111,17 @@ async function main() {
     }
     await sleep(1100)
   }
+  // dataTFT 增强：挂攻略 + 追加独有阵容。属于可选增强，失败不影响主抓取。
+  let datatft = null
+  try {
+    const applied = applyDatatft({ comps, details, lk, root: ROOT })
+    if (applied) {
+      datatft = applied.doc
+      console.log(`dataTFT: 攻略 ${applied.guided} 套 / 独有阵容 ${applied.added} 套`)
+    }
+  } catch (e) {
+    warnings.push('dataTFT 合并跳过: ' + e.message)
+  }
   await collectIcons(lk)
   // The global unit_items endpoint serves S18. Derive recommendations exclusively from S19 details.
   const unitItems = deriveUnitItems([...details.values()])
@@ -127,6 +139,7 @@ async function main() {
     ['augments.json', wrap(groups)], ['augmentRanking.json', wrap(augmentRanking)], ['unitItems.json', wrap(unitItems)],
     ['meta.json', { set: 'TFTSet19', season: 'S19', queue: 'PBE', patch: lk._metadata.patch, source: 'MetaTFT', fetchedAt: new Date().toISOString(), refreshHours: 4, augmentRankingAvailable: augmentRanking.isCurrentSet, augmentRankingReferenceAvailable: augmentRanking.ratedIds > 0, augmentRankingSet: augmentRanking.rankingSet }],
   ])
+  if (datatft) docs.set('datatft.json', datatft)
   for (const [id, d] of details) docs.set(`comps/${id}.json`, wrap(d))
   const files = []
   for (const [name, doc] of docs) {

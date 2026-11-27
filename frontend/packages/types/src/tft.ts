@@ -78,6 +78,19 @@ export interface Comp {
 
   /** 更新时间 */
   updatedAt?: Date
+
+  /** 数据来源：metatft / datatft（dataTFT 独有阵容为 'datatft'） */
+  source?: string
+  /** 数据来源列表（MetaTFT 阵容被 dataTFT 攻略覆盖时为 ['metatft','datatft']） */
+  sources?: string[]
+  /** dataTFT 原始登场率（与 pickRate 不同分母，仅用于攻略页展示） */
+  datatftPlayRate?: number | null
+  /** dataTFT 自己的分档（S/A/B/C/D） */
+  tier?: string | null
+  /** dataTFT 站点给的档位（S/A/B/C/D），有则优先展示 */
+  datatftTier?: string | null
+  /** 档位来源：datatft = 站点档位，metatft = 本地百分位计算 */
+  tierSource?: string | null
 }
 
 export interface Counter {
@@ -138,6 +151,12 @@ export interface CompDetail {
   early_options?: Record<string, Option[]>
   /** 阵容后期选项 */
   options?: Record<string, Option[]>
+  /** dataTFT 独有阵容：只有阵容构成与攻略，没有站位/装备统计 */
+  datatftOnly?: boolean
+  /** 每个英雄的成型装备（dataTFT 用，MetaTFT 的装备统计在 item/builds 接口里） */
+  builds?: Build[]
+  /** dataTFT 攻略更新时间 */
+  sourceUpdatedAt?: string | null
 }
 
 export interface ItemStat {

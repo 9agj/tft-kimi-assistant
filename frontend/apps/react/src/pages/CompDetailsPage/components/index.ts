@@ -2,6 +2,7 @@ import { lazy } from 'react'
 import { retryLoadWithFallBack } from 'utils'
 
 export type { FinalCompTabProps } from './FinalCompTab/index'
+export type { GuideTabProps } from './GuideTab/index'
 export type { HeroesTabProps } from './HeroesTab/index'
 export type { ItemsTabProps } from './ItemsTab/index'
 
@@ -12,6 +13,10 @@ export type { TransitionTabProps } from './TransitionTab/index'
 
 export const FinalCompTab = lazy(() => retryLoadWithFallBack({
   fn: () => import('./FinalCompTab/index').then(m => ({ default: m.FinalCompTab })),
+}))
+
+export const GuideTab = lazy(() => retryLoadWithFallBack({
+  fn: () => import('./GuideTab/index'),
 }))
 
 export const HeroesTab = lazy(() => retryLoadWithFallBack({

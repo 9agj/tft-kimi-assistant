@@ -33,7 +33,10 @@ const API = 'https://api.datatft.com'
 const SALT = 'koTefnFEdaYDuLFmXyzt'
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
-const LIST_BODY = { version: '19', season: '19', tier: 'all', time: '7' }
+const SEASON = process.env.KIMI_DATATFT_SEASON || '19'
+const LIST_BODY = { version: SEASON, season: SEASON, tier: 'all', time: '7' }
+const SUFFIX = SEASON === '19' ? '' : `-s${SEASON}`
+const EXPLORE_VERSION = process.env.KIMI_DATATFT_VERSION || '18.7'
 
 const argv = process.argv.slice(2)
 const has = (f) => argv.includes(f)
@@ -42,6 +45,8 @@ const num = (f, d) => {
   return hit ? Number(hit.slice(f.length + 1)) : d
 }
 const LIST_ONLY = has('--list-only')
+const EXPLORE_ONLY = has('--explore-only')
+const COMPS_ONLY = has('--comps-only')
 const DRY = has('--dry-run')
 const LIMIT = num('--limit', 0)
 const MAX_TRIES = num('--tries', Number(process.env.KIMI_DATATFT_MAX_TRIES || 8))
@@ -203,7 +208,51 @@ async function main() {
   }
   log(`代理池 ${pool.length} 个，did=${state.did}`)
   if (DRY) {
-    log('dry-run：计划 1 次 /team/list + 每阵容 1 次 /team/strategy，不发送请求')
+    log(`dry-run：计划 1 次 /data/explore(${EXPLORE_VERSION}) + 1 次 /team/list + 每阵容 1 次 /team/strategy，不发送请求`)
+    return
+  }
+
+  // 0) 聚合统计（单位/装备/羁绊的胜率、前四率、均排、场次）
+  const exploreRes = await requestWithRotation(pool, state, '/data/explore', { version: EXPLORE_VERSION }, log)
+  if (exploreRes?.data) {
+    const d = exploreRes.data
+    writeJsonAtomic(path.join(OUT_DIR, 'explore.json'), {
+      fetchedAt: new Date().toISOString(),
+      version: EXPLORE_VERSION,
+      counts: {
+        units: (d.units || []).length,
+        equips: (d.equips || []).length,
+        traits: (d.traits || []).length,
+        starUnits: (d.star_units || []).length,
+      },
+      data: d,
+    })
+    log(`聚合统计 OK（${EXPLORE_VERSION}）：单位 ${(d.units || []).length} / 装备 ${(d.equips || []).length} / 羁绊 ${(d.traits || []).length}`)
+  } else {
+    log(`聚合统计失败：code=${exploreRes?.code} http=${exploreRes?.http}（不影响阵容抓取）`)
+  }
+  if (EXPLORE_ONLY) {
+    writeJsonAtomic(path.join(OUT_DIR, `status${SUFFIX}.json`), {
+      ok: !!exploreRes?.data,
+      at: new Date().toISOString(),
+      stage: 'explore',
+      blocked: state.blocked,
+      log: state.log,
+    })
+    return
+  }
+
+  // 0.5) 阵容榜（按赛季，用于核对站点阵容总量）
+  if (COMPS_ONLY) {
+    const out = {}
+    for (const season of ['19', '18']) {
+      const r = await requestWithRotation(pool, state, '/team/comps', { season }, log)
+      const list = r?.data?.list || []
+      out[season] = { count: list.length, sample: list.slice(0, 2) }
+      log(`/team/comps season=${season} → ${list.length} 套`)
+      writeJsonAtomic(path.join(OUT_DIR, `comps-s${season}.json`), { fetchedAt: new Date().toISOString(), season, count: list.length, list })
+    }
+    writeJsonAtomic(path.join(OUT_DIR, `status${SUFFIX}.json`), { ok: true, at: new Date().toISOString(), stage: 'comps', counts: { s19: out['19']?.count, s18: out['18']?.count }, blocked: state.blocked, log: state.log })
     return
   }
 
@@ -212,7 +261,7 @@ async function main() {
   const teams = listRes?.data?.list
   if (!Array.isArray(teams)) {
     log(`列表失败：code=${listRes?.code} http=${listRes?.http} msg=${String(listRes?.message || '').slice(0, 100)}`)
-    writeJsonAtomic(path.join(OUT_DIR, 'status.json'), {
+    writeJsonAtomic(path.join(OUT_DIR, `status${SUFFIX}.json`), {
       ok: false,
       at: new Date().toISOString(),
       stage: 'list',
@@ -222,7 +271,7 @@ async function main() {
     process.exit(1)
   }
   log(`列表 OK：${teams.length} 套阵容`)
-  writeJsonAtomic(path.join(OUT_DIR, 'teams.json'), {
+  writeJsonAtomic(path.join(OUT_DIR, `teams${SUFFIX}.json`), {
     fetchedAt: new Date().toISOString(),
     count: teams.length,
     list: teams,
@@ -230,7 +279,7 @@ async function main() {
 
   if (LIST_ONLY) {
     log('仅列表模式，结束')
-    writeJsonAtomic(path.join(OUT_DIR, 'status.json'), {
+    writeJsonAtomic(path.join(OUT_DIR, `status${SUFFIX}.json`), {
       ok: true,
       at: new Date().toISOString(),
       teams: teams.length,
@@ -243,7 +292,7 @@ async function main() {
 
   // 2) 逐个阵容攻略
   const targets = LIMIT > 0 ? teams.slice(0, LIMIT) : teams
-  const dir = path.join(OUT_DIR, 'strategy')
+  const dir = path.join(OUT_DIR, `strategy${SUFFIX}`)
   fs.mkdirSync(dir, { recursive: true })
   let ok = 0
   const failed = []
@@ -260,7 +309,7 @@ async function main() {
     await sleep(800 + Math.random() * 700)
   }
 
-  writeJsonAtomic(path.join(OUT_DIR, 'status.json'), {
+  writeJsonAtomic(path.join(OUT_DIR, `status${SUFFIX}.json`), {
     ok: failed.length === 0,
     at: new Date().toISOString(),
     teams: teams.length,

@@ -1,6 +1,6 @@
-import type { FinalCompTabProps, HeroesTabProps, ItemsTabProps, OverviewTabProps, TransitionTabProps } from './components'
+import type { FinalCompTabProps, GuideTabProps, HeroesTabProps, ItemsTabProps, OverviewTabProps, TransitionTabProps } from './components'
 import type { EnhancedCompData } from '@/utils/compRating'
-import { getCompDetails } from 'api-client'
+import { getCompDetails, getDatatft } from 'api-client'
 import { useMemo, useState } from 'react'
 import { useRequest } from 'react-helper'
 import {
@@ -10,7 +10,7 @@ import {
   ItemsGridSkeleton,
 } from '@/components'
 import { useConfigStore } from '@/store/configStore'
-import { FinalCompTab, HeroesTab, ItemsTab, LazyTabContent, OverviewTab, TransitionTab } from './components'
+import { FinalCompTab, GuideTab, HeroesTab, ItemsTab, LazyTabContent, OverviewTab, TransitionTab } from './components'
 
 interface CompDetailContentProps {
   comp: EnhancedCompData | null
@@ -27,9 +27,12 @@ function getSkeletonTabs(traitsCount?: number) {
 }
 
 export function CompDetailContent({ comp }: CompDetailContentProps) {
-  const [activeTab, setActiveTab] = useState('overview')
+  const isDatatftOnly = comp?.source === 'datatft'
+  const [activeTab, setActiveTab] = useState(isDatatftOnly ? 'guide' : 'overview')
   const { windowMode } = useConfigStore()
-  const [activatedTabs, setActivatedTabs] = useState<Set<string>>(() => new Set(['overview']))
+  const [activatedTabs, setActivatedTabs] = useState<Set<string>>(
+    () => new Set(isDatatftOnly ? ['guide'] : ['overview']),
+  )
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab)
@@ -55,11 +58,106 @@ export function CompDetailContent({ comp }: CompDetailContentProps) {
     },
   )
 
+  // dataTFT 攻略：与 GuideTab 共用 cacheKey，未命中时不渲染「攻略」页签
+  // 攻略是可选增强：接口 404 / 网络异常都不应打断详情页，故关闭抛错
+  const { data: datatft } = useRequest(async () => {
+    try {
+      return await getDatatft()
+    }
+    catch {
+      return null
+    }
+  }, {
+    cacheKey: 'datatft-guides',
+    staleTime: 1000 * 60 * 30,
+    throwOnError: false,
+  })
+
+  const guide = comp?.compId ? datatft?.guides?.[comp.compId] : undefined
+
   const tabs = useMemo(() => {
     if (!compDetails?.data)
       return []
 
     const data = compDetails.data
+
+    // dataTFT 独有阵容：有站位就展示棋盘，有装备就展示装备页；过渡/变阵 dataTFT 不提供，不给页签
+    if (data.datatftOnly) {
+      const hasBoard = (data.positioning?.length ?? 0) > 0
+      const hasItems = (data.item?.length ?? 0) > 0
+      const dtTabs = []
+      if (hasBoard) {
+        dtTabs.push({
+          value: 'overview',
+          label: '概览',
+          content: (
+            <LazyTabContent<OverviewTabProps>
+              shouldRender
+              component={OverviewTab}
+              props={{ data, builds: data.datatftOnly && data.builds?.length ? data.builds : comp?.builds, traits: comp?.traits, units: comp?.units }}
+              fallback={<FormationBoardSkeleton traitsCount={comp?.traits?.length} />}
+            />
+          ),
+        })
+      }
+      if (hasItems) {
+        dtTabs.push({
+          value: 'heroes',
+          label: '英雄',
+          content: (
+            <LazyTabContent<HeroesTabProps>
+              shouldRender
+              component={HeroesTab}
+              props={{ items: data.item ?? [] }}
+              fallback={<ItemsGridSkeleton />}
+            />
+          ),
+        })
+        dtTabs.push({
+          value: 'items',
+          label: '装备',
+          content: (
+            <LazyTabContent<ItemsTabProps>
+              shouldRender
+              component={ItemsTab}
+              props={{ items: data.item ?? [] }}
+              fallback={<ItemsGridSkeleton />}
+            />
+          ),
+        })
+      }
+      // dataTFT 不提供过渡/变阵数据，但仍给页签，用明确说明代替缺失，保证页签结构与 MetaTFT 阵容一致
+      dtTabs.push({
+        value: 'transition',
+        label: '过渡',
+        content: <EmptyState message="dataTFT 未提供过渡数据" />,
+      })
+      dtTabs.push({
+        value: 'final',
+        label: '变阵',
+        content: <EmptyState message="dataTFT 未提供变阵数据" />,
+      })
+      // 攻略还没加载到（或抓取时该阵容没有攻略）时给个明确说明，不能返回空数组变成白屏
+      dtTabs.push(guide
+        ? {
+            value: 'guide',
+            label: '攻略',
+            content: (
+              <LazyTabContent<GuideTabProps>
+                shouldRender
+                component={GuideTab}
+                props={{ compId: comp?.compId ?? '' }}
+                fallback={<ItemsGridSkeleton />}
+              />
+            ),
+          }
+        : {
+            value: 'guide',
+            label: '攻略',
+            content: <EmptyState message="该阵容暂无攻略数据，请稍后同步重试" />,
+          })
+      return dtTabs
+    }
 
     return [
       {
@@ -70,7 +168,7 @@ export function CompDetailContent({ comp }: CompDetailContentProps) {
               <LazyTabContent<OverviewTabProps>
                 shouldRender={activatedTabs.has('overview')}
                 component={OverviewTab}
-                props={{ data, builds: comp?.builds, traits: comp?.traits, units: comp?.units }}
+                props={{ data, builds: data.datatftOnly && data.builds?.length ? data.builds : comp?.builds, traits: comp?.traits, units: comp?.units }}
                 fallback={<FormationBoardSkeleton traitsCount={comp?.traits?.length} />}
               />
             )
@@ -116,6 +214,20 @@ export function CompDetailContent({ comp }: CompDetailContentProps) {
           />
         ),
       },
+      ...(guide
+        ? [{
+            value: 'guide',
+            label: '攻略',
+            content: (
+              <LazyTabContent<GuideTabProps>
+                shouldRender={activatedTabs.has('guide')}
+                component={GuideTab}
+                props={{ compId: comp?.compId ?? '' }}
+                fallback={<ItemsGridSkeleton />}
+              />
+            ),
+          }]
+        : []),
       {
         value: 'final',
         label: '变阵',
@@ -129,7 +241,7 @@ export function CompDetailContent({ comp }: CompDetailContentProps) {
         ),
       },
     ]
-  }, [compDetails, comp, activatedTabs])
+  }, [compDetails, comp, activatedTabs, guide])
 
   const skeletonTabs = useMemo(() => getSkeletonTabs(comp?.traits?.length), [comp?.traits?.length])
 

@@ -52,7 +52,7 @@ export const ItemCard = memo(({ item }: ItemCardProps) => {
         </div>
 
         <div className="flex items-center gap-1 justify-self-center">
-          {item.avg !== undefined && (
+          {item.avg != null && Number.isFinite(item.avg) && (
             <>
               <span className="text-gray-400 text-[10px] sm:text-xs">影响</span>
               <Impact avgRank={item.avg!} className="text-[10px] sm:text-xs" />
