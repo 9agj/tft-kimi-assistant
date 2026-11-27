@@ -162,6 +162,10 @@ docs/        构建说明、版本说明、功能解析、截图
 - [提交 Bug](https://github.com/9agj/tft-kimi-assistant/issues/new?template=bug_report.yml)
 - [功能建议](https://github.com/9agj/tft-kimi-assistant/issues/new?template=feature_request.yml)
 
+App 内同样有三个入口，在 **设置 → 问题反馈与建议**；旁边的 **版本与更新** 会查 GitHub Releases，有新版时给出下载页：
+
+<img src="docs/screenshots/settings.png" width="230" alt="设置面板">
+
 App 内「设置 → 问题反馈与建议」有同样的入口。
 
 ## 许可证

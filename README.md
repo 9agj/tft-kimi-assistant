@@ -162,6 +162,10 @@ Bugs, wrong data, or feature ideas — all welcome in [Issues](https://github.co
 - [Report a bug](https://github.com/9agj/tft-kimi-assistant/issues/new?template=bug_report.yml)
 - [Request a feature](https://github.com/9agj/tft-kimi-assistant/issues/new?template=feature_request.yml)
 
+The same three entries live inside the app under **Settings → 问题反馈与建议**, next to **版本与更新**, which checks GitHub Releases and offers the download page when a newer build exists:
+
+<img src="docs/screenshots/settings.png" width="230" alt="Settings panel">
+
 The same entry points exist inside the app under **Settings → Feedback**.
 
 ## License
