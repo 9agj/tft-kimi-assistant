@@ -35,3 +35,4 @@ docs/交接接收人回填表_*
 signing.env
 *.jks
 *.p12
+android/assets/www/
