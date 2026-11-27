@@ -41,7 +41,7 @@ A native Android shell around a React interface: browse the current set's comps,
 Grab the latest APK from **[Releases](https://github.com/9agj/tft-kimi-assistant/releases)**. Release notes live in [CHANGELOG.md](CHANGELOG.md) — every version and its changelog are published here on GitHub.
 
 - Package: `com.kimi.tft`
-- Current: **v1.2.4** (versionCode 7), minSdk 26 / targetSdk 34
+- Current: **v1.2.5** (versionCode 8), minSdk 26 / targetSdk 34
 - The APK is signed with the same key across releases, so upgrades install over the old version
 
 ## Architecture

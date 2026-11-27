@@ -24,6 +24,7 @@ declare global {
       minimize: () => void
       exit: () => void
       openExternal: (url: string) => void
+      checkUpdate: () => void
     }
   }
 }

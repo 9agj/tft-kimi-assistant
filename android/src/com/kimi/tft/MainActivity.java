@@ -119,6 +119,7 @@ public final class MainActivity extends Activity {
         @JavascriptInterface public void copyText(String text) { runOnUiThread(() -> ((ClipboardManager) getSystemService(CLIPBOARD_SERVICE)).setPrimaryClip(ClipData.newPlainText("S19 阵容", text))); }
         @JavascriptInterface public void minimize() { runOnUiThread(() -> moveTaskToBack(true)); }
         @JavascriptInterface public void exit() { runOnUiThread(() -> finish()); }
+        @JavascriptInterface public void checkUpdate() { UpdateCheck.checkManual(MainActivity.this); }
         @JavascriptInterface public void openExternal(String url) { MainActivity.this.openExternal(url); }
     }
 

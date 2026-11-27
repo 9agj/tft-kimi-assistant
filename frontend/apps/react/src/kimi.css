@@ -175,3 +175,26 @@ button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px 
 .kimi-feedback-links { display: flex; flex-wrap: wrap; gap: 8px; }
 .kimi-feedback-links a { flex: 1 1 auto; min-width: 96px; text-align: center; padding: 9px 12px; border-radius: 10px; border: 1px solid #35455b; background: #223047; color: #f1f5fb; font-size: 13px; text-decoration: none; }
 .kimi-feedback-links a:active { background: #2b3c56; }
+
+.kimi-update-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #1b2636;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.kimi-update-card p { margin: 4px 0 0; color: #b7c4d6; font-size: 13px; }
+.kimi-update-btn {
+  flex: 0 0 auto;
+  min-width: 96px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid #35455b;
+  background: #223047;
+  color: #f1f5fb;
+  font-size: 13px;
+  cursor: pointer;
+}
+.kimi-update-btn:active { background: #2b3b55; }

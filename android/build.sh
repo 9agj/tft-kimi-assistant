@@ -8,7 +8,7 @@ WORK="$ROOT/build"
 SRC="$ROOT/android"
 OUT="$ROOT/out"
 KS="$ROOT/signing/kimi.jks"
-APK="$OUT/tft基米助手-v1.2.4.apk"
+APK="$OUT/tft基米助手-v1.2.5.apk"
 fail() { printf 'Build failed: %s\n' "$1" >&2; exit 1; }
 
 # 签名库口令：只从环境变量或受保护的 env 文件读取，禁止写进本脚本

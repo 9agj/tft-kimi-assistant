@@ -41,7 +41,7 @@ Android 原生外壳 + React 界面：查当前赛季的阵容、弈子、装备
 安装包统一发布在 **[Releases](https://github.com/9agj/tft-kimi-assistant/releases)**，版本说明见 [CHANGELOG.md](CHANGELOG.md)——本项目所有版本更新与更新日志都在 GitHub 维护。
 
 - 包名：`com.kimi.tft`
-- 当前版本：**v1.2.4**（versionCode 7），minSdk 26 / targetSdk 34
+- 当前版本：**v1.2.5**（versionCode 8），minSdk 26 / targetSdk 34
 - 各版本使用同一把签名密钥，可直接覆盖安装升级
 
 ## 架构

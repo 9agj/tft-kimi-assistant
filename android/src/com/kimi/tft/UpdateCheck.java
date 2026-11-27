@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -25,7 +27,8 @@ final class UpdateCheck {
     private static final String API = "https://api.github.com/repos/9agj/tft-kimi-assistant/releases/latest";
     private static final String PREFS = "kimi-update";
     private static final String KEY_IGNORED = "ignoredVersion";
-    private static final int TIMEOUT_MS = 8000;
+    private static final String TAG = "KimiUpdate";
+    private static final int TIMEOUT_MS = 15000;
     private static final int MAX_BYTES = 64 * 1024;
 
     private UpdateCheck() {}
@@ -47,7 +50,8 @@ final class UpdateCheck {
         Thread t = new Thread(new Runnable() {
             @Override public void run() {
                 String[] latest = fetchLatest();
-                if (latest == null) return;
+                if (latest == null) { Log.w(TAG, "启动检查失败：无法获取 GitHub Release 信息"); return; }
+                Log.i(TAG, "启动检查：本地 " + current + "，远端 " + latest[0]);
                 final String version = latest[0];
                 final String page = latest[1];
                 if (version.isEmpty() || page.isEmpty()) return;
@@ -81,6 +85,55 @@ final class UpdateCheck {
         t.start();
     }
 
+    /** 手动检查：无论结果如何都用 Toast 回一句，便于用户自查。 */
+    static void checkManual(final Activity activity) {
+        final String current = currentVersion(activity);
+        if (current.isEmpty()) { toast(activity, "读取本地版本失败"); return; }
+        toast(activity, "正在检查更新…");
+        Thread t = new Thread(new Runnable() {
+            @Override public void run() {
+                String[] latest = fetchLatest();
+                if (latest == null) {
+                    Log.w(TAG, "手动检查失败：网络或接口异常");
+                    toast(activity, "检查失败，请检查网络后重试");
+                    return;
+                }
+                final String version = latest[0];
+                final String page = latest[1];
+                Log.i(TAG, "手动检查：本地 " + current + "，远端 " + version);
+                if (version.isEmpty() || page.isEmpty()) { toast(activity, "检查失败：返回内容异常"); return; }
+                if (compare(version, current) <= 0) { toast(activity, "已是最新版本 " + current); return; }
+                activity.runOnUiThread(new Runnable() {
+                    @Override public void run() {
+                        if (activity.isFinishing()) return;
+                        new AlertDialog.Builder(activity)
+                            .setTitle("发现新版本 v" + version)
+                            .setMessage("当前版本 " + current + "，可前往 GitHub Releases 下载安装。")
+                            .setPositiveButton("打开下载页", new DialogInterface.OnClickListener() {
+                                @Override public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(page)));
+                                    } catch (Exception ignored) {}
+                                }
+                            })
+                            .setNegativeButton("稍后", null)
+                            .show();
+                    }
+                });
+            }
+        }, "KimiUpdateManual");
+        t.setDaemon(true);
+        t.start();
+    }
+
+    private static void toast(final Activity activity, final String text) {
+        activity.runOnUiThread(new Runnable() {
+            @Override public void run() {
+                if (!activity.isFinishing()) Toast.makeText(activity, text, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     /** 返回 {版本号(去 v 前缀), 发布页 URL}；任何失败返回 null。 */
     private static String[] fetchLatest() {
         HttpURLConnection conn = null;
@@ -106,6 +159,7 @@ final class UpdateCheck {
             if (tag.startsWith("v") || tag.startsWith("V")) tag = tag.substring(1);
             return new String[] { tag.trim(), page.trim() };
         } catch (Exception e) {
+            Log.w(TAG, "请求失败：" + e.getClass().getSimpleName() + " " + e.getMessage());
             return null;
         } finally {
             if (conn != null) conn.disconnect();
