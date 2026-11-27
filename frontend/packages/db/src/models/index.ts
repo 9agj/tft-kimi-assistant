@@ -1,0 +1,5 @@
+export type { AugmentTierDocument } from './augmentTier'
+export type { CompDocument } from './comp'
+export type { CompDetailDocument } from './compDetail'
+export type { ItemStatsDocument } from './itemStats'
+export type { UnitStatsDocument } from './unitStats'

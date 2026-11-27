@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+html,
+body {
+  background: transparent;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+[data-radix-scroll-area-viewport] {
+  scrollbar-width: none;
+}
+
+[data-radix-scroll-area-viewport]::-webkit-scrollbar {
+  display: none;
+}
+
+[data-radix-scroll-area-viewport] > div {
+  display: block !important;
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+* {
+  user-select: none;
+}
+
+/* 骨架屏 shimmer 动画 - 更明显的加载效果 */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 增强的 pulse 动画 - 更强的闪烁效果 */
+@keyframes skeleton-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-skeleton-pulse {
+  animation: skeleton-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.virtual-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.2s ease;
+}
+
+.virtual-scrollbar:hover,
+.virtual-scrollbar:active,
+.virtual-scrollbar.is-scrolling {
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
+
+.virtual-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.virtual-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.virtual-scrollbar::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+.virtual-scrollbar:hover::-webkit-scrollbar-thumb,
+.virtual-scrollbar:active::-webkit-scrollbar-thumb,
+.virtual-scrollbar.is-scrolling::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.virtual-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}

@@ -1,0 +1,11 @@
+[Unit]
+Description=TFT Kimi Set 19 snapshot refresh
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/root/tft-kimi
+ExecStart=/usr/bin/flock -n /root/tft-kimi/data/scrape.lock /usr/bin/node /root/tft-kimi/server/scrape.mjs
+TimeoutStartSec=30min
+Nice=10

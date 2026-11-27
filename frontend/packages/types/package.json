@@ -1,0 +1,29 @@
+{
+  "name": "types",
+  "type": "module",
+  "version": "0.7.0",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "keywords": [],
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "lint": "eslint . --ext .ts,.tsx --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@rslib/core": "catalog:",
+    "typescript": "catalog:"
+  }
+}

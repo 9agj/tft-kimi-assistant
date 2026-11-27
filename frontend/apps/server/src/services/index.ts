@@ -1,0 +1,7 @@
+export { augmentService } from './augment'
+export { championService } from './champion'
+export { compService } from './comp'
+export { databaseService } from './database'
+export { itemService } from './item'
+export { lookupsService } from './lookups'
+export { unitItemsService } from './unit_items'

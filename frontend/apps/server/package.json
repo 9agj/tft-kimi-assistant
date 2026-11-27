@@ -1,0 +1,35 @@
+{
+  "name": "server",
+  "type": "module",
+  "version": "0.7.0",
+  "scripts": {
+    "build": "rslib build",
+    "dev": "tsx watch src/index.ts",
+    "start": "pnpm run build && NODE_ENV=production node dist/index.js",
+    "lint": "eslint . --ext .ts,.tsx --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "catalog:",
+    "@hono/swagger-ui": "catalog:",
+    "@hono/zod-openapi": "catalog:",
+    "db": "workspace:*",
+    "dotenv": "catalog:",
+    "hono": "catalog:",
+    "logger": "workspace:*",
+    "lru-cache": "catalog:",
+    "node-cron": "catalog:",
+    "p-limit": "catalog:",
+    "scraper": "workspace:*",
+    "utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@rslib/core": "catalog:",
+    "@types/node": "catalog:",
+    "@types/node-cron": "catalog:",
+    "config": "workspace:*",
+    "tsx": "catalog:",
+    "types": "workspace:*",
+    "typescript": "catalog:"
+  }
+}

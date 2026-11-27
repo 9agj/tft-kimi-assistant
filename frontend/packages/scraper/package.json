@@ -1,0 +1,35 @@
+{
+  "name": "scraper",
+  "type": "module",
+  "version": "0.7.0",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "types": "./dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "rslib build",
+    "dev": "rslib build --watch",
+    "lint": "eslint  --ext .ts,.tsx --fix",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "axios": "catalog:",
+    "axios-retry": "catalog:",
+    "lodash-es": "catalog:",
+    "types": "workspace:*",
+    "user-agents": "catalog:"
+  },
+  "devDependencies": {
+    "@rslib/core": "catalog:",
+    "@types/lodash-es": "catalog:",
+    "@types/node": "catalog:",
+    "@types/user-agents": "catalog:",
+    "typescript": "catalog:"
+  }
+}

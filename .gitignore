@@ -1,0 +1,26 @@
+# 依赖
+node_modules/
+.pnpm-store/
+
+# 构建产物（可重建）
+out/
+frontend/apps/*/dist/
+frontend/packages/*/dist/
+tools/node_modules/
+
+# 大体积归档与历史快照（不入库）
+backup/
+archive/
+releases/v1.2.0/
+releases/v1.2.1/
+
+# 本机与临时
+*.log
+*.tmp
+.DS_Store
+local.properties
+
+# 签名库口令（只存在服务器与本机 secrets）
+signing.env
+*.jks
+*.p12

@@ -1,0 +1,175 @@
+name: 构建并发布桌面应用
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建 packages
+        run: pnpm run build:packages
+
+      - name: 构建 Windows 应用
+        run: pnpm run build:win
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_APTABASE_CODE: ${{ secrets.APTABASE_CODE }}
+          VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            apps/electron/dist/tft-kimi-*-x64-setup.exe
+            apps/electron/dist/tft-kimi-*-x64-setup.exe.blockmap
+            apps/electron/dist/tft-kimi-*-arm64-setup.exe
+            apps/electron/dist/tft-kimi-*-arm64-setup.exe.blockmap
+            apps/electron/dist/latest.yml
+          retention-days: 7
+
+  build-macos:
+    runs-on: macos-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.4
+
+      - name: 安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: 安装依赖
+        run: pnpm install --frozen-lockfile
+
+      - name: 构建 packages
+        run: pnpm run build:packages
+
+      - name: 构建 macOS 应用
+        run: pnpm run build:mac
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_APTABASE_CODE: ${{ secrets.APTABASE_CODE }}
+          VITE_API_BASE_URL: ${{ secrets.API_BASE_URL }}
+
+      - name: 上传构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-build
+          path: |
+            apps/electron/dist/tft-kimi-*-x64.dmg
+            apps/electron/dist/tft-kimi-*-x64.dmg.blockmap
+            apps/electron/dist/tft-kimi-*-x64.zip
+            apps/electron/dist/tft-kimi-*-x64.zip.blockmap
+            apps/electron/dist/tft-kimi-*-arm64.dmg
+            apps/electron/dist/tft-kimi-*-arm64.dmg.blockmap
+            apps/electron/dist/tft-kimi-*-arm64.zip
+            apps/electron/dist/tft-kimi-*-arm64.zip.blockmap
+            apps/electron/dist/latest-mac.yml
+          retention-days: 7
+
+  create-release:
+    needs: [build-windows, build-macos]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 下载 Windows 构建产物
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-build
+          path: ./release-assets
+
+      - name: 下载 macOS 构建产物
+        uses: actions/download-artifact@v4
+        with:
+          name: macos-build
+          path: ./release-assets
+
+      - name: 生成安装说明
+        id: release-notes
+        run: |
+          TAG_NAME="${GITHUB_REF_NAME}"
+          VERSION="${TAG_NAME#v}"
+          cat << EOF > release-body.md
+          ## 📥 下载
+
+          | 平台 | 架构 | 下载链接 |
+          |:---:|:---:|:---:|
+          | **Windows** | Intel / AMD | [⬇️ tft-kimi-${VERSION}-x64-setup.exe](https://github.com/upstream/repo/releases/download/${TAG_NAME}/tft-kimi-${VERSION}-x64-setup.exe) |
+          | **Windows** | ARM | [⬇️ tft-kimi-${VERSION}-arm64-setup.exe](https://github.com/upstream/repo/releases/download/${TAG_NAME}/tft-kimi-${VERSION}-arm64-setup.exe) |
+          | **macOS** | Intel | [⬇️ tft-kimi-${VERSION}-x64.dmg](https://github.com/upstream/repo/releases/download/${TAG_NAME}/tft-kimi-${VERSION}-x64.dmg) |
+          | **macOS** | Apple Silicon | [⬇️ tft-kimi-${VERSION}-arm64.dmg](https://github.com/upstream/repo/releases/download/${TAG_NAME}/tft-kimi-${VERSION}-arm64.dmg) |
+
+          ---
+
+          ## 📦 安装说明
+
+          ### Windows
+          下载对应架构的安装包，双击运行即可安装。
+
+          > ⚠️ 由于软件未签名，Windows SmartScreen 可能会拦截安装：
+          > 1. 点击 **「更多信息」**
+          > 2. 点击 **「仍要运行」**
+
+          ### macOS
+          下载 DMG 文件后，双击打开并将 tft-kimi 拖入 Applications 文件夹。
+
+          > ⚠️ 首次打开提示"已损坏"？在终端运行：
+          > \`\`\`bash
+          > sudo xattr -r -d com.apple.quarantine /Applications/tft-kimi.app
+          > \`\`\`
+
+          ---
+
+          EOF
+
+      - name: 创建或更新 Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: ./release-assets/*
+          body_path: release-body.md
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
+          make_latest: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

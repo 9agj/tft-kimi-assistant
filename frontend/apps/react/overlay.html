@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN" class="dark kimi-theme">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>S19 阵容悬浮窗 · tft基米助手</title></head>
+<body>
+  <div class="overlay-shell">
+    <div class="selector">
+      <span id="comp-tier" class="comp-tier" aria-label="当前阵容等级">—</span>
+      <button id="comp-picker" type="button" role="combobox" aria-label="切换阵容" aria-controls="comp-options" aria-haspopup="listbox" aria-expanded="false"><span id="comp-name">正在读取阵容…</span><span class="chevron" aria-hidden="true">⌄</span></button>
+    </div>
+    <div id="comp-menu" class="comp-menu" hidden>
+      <div id="tier-filters" class="tier-filters" role="group" aria-label="按阵容等级筛选"></div>
+      <div id="comp-options" role="listbox" aria-label="S19 阵容列表"></div>
+    </div>
+    <div id="metrics" class="metrics"></div>
+    <nav id="tabs" aria-label="阵容资料"><button type="button" data-tab="board" class="active">站位</button><button type="button" data-tab="items">出装</button><button type="button" data-tab="early">过渡</button><button type="button" data-tab="late">变阵</button></nav>
+    <main id="content"><p class="note">正在读取 S19 阵容…</p></main>
+  </div>
+  <script type="module" src="/src/overlay.ts"></script>
+</body>
+</html>

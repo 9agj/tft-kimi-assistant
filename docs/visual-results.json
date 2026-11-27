@@ -1,0 +1,122 @@
+{
+  "ok": true,
+  "checks": [
+    "dark theme applied",
+    "Silver text contrast >= 4.5",
+    "Silver glyph material is applied",
+    "Gold text contrast >= 4.5",
+    "Gold glyph material is applied",
+    "Prismatic text contrast >= 4.5",
+    "Prismatic glyph material is applied",
+    "all source augment variants preserved",
+    "radiant category uses official gold frame",
+    "official radiant frame valid PNG",
+    "radiant frame follows source metadata rather than name alone",
+    "normal items stay normal",
+    "overlay and main use identical grades for every composition",
+    "overlay dropdown scrollable inside window",
+    "overlay grade filter works",
+    "overlay trait counts match unit composition",
+    "mage and bodyguard counts are visible",
+    "dropdown selection updates composition and grade",
+    "no page errors or image failures"
+  ],
+  "evidence": {
+    "theme": {
+      "background": "#111722",
+      "colorScheme": "dark"
+    },
+    "Silver": {
+      "count": 101,
+      "text": "rgb(241, 245, 251)",
+      "background": "rgb(27, 38, 54)",
+      "badgeText": "rgb(211, 227, 247)",
+      "badgeBackground": "rgb(36, 54, 77)",
+      "fontSize": "13px",
+      "material": "linear-gradient(rgb(170, 186, 206) 20%, rgb(159, 180, 206) 50%, rgb(104, 134, 165) 80%)",
+      "glyphFilter": "url(\"#kimi-augment-glyph\")",
+      "textContrast": 13.9379143124084,
+      "badgeContrast": 9.416347011958802,
+      "filterContrast": 9.416347011958802
+    },
+    "Gold": {
+      "count": 146,
+      "text": "rgb(241, 245, 251)",
+      "background": "rgb(27, 38, 54)",
+      "badgeText": "rgb(255, 227, 154)",
+      "badgeBackground": "rgb(61, 53, 34)",
+      "fontSize": "13px",
+      "material": "linear-gradient(rgb(222, 186, 49) 20%, rgb(231, 186, 30) 50%, rgb(214, 156, 49) 80%)",
+      "glyphFilter": "url(\"#kimi-augment-glyph\")",
+      "textContrast": 13.9379143124084,
+      "badgeContrast": 9.652554200854054,
+      "filterContrast": 9.652554200854054
+    },
+    "Prismatic": {
+      "count": 122,
+      "text": "rgb(241, 245, 251)",
+      "background": "rgb(27, 38, 54)",
+      "badgeText": "rgb(224, 215, 255)",
+      "badgeBackground": "rgb(52, 43, 73)",
+      "fontSize": "13px",
+      "material": "linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.12)), url(\"http://127.0.0.1:8798/cdn/file/metatft/augments/tiers/tier3.png\")",
+      "glyphFilter": "url(\"#kimi-augment-glyph\")",
+      "textContrast": 13.9379143124084,
+      "badgeContrast": 9.657330601852916,
+      "filterContrast": 9.657330601852916
+    },
+    "radiant": {
+      "goldFramedIcons": 37,
+      "frameBytes": 7216
+    },
+    "overlay": {
+      "tier": "S",
+      "composition": "comp_19_429_429003_pbe",
+      "traits": [
+        {
+          "id": "DA_Arcanist19",
+          "count": 2,
+          "text": "2法师"
+        },
+        {
+          "id": "DA_Bodyguard19",
+          "count": 2,
+          "text": "2护卫"
+        },
+        {
+          "id": "DA_Encore19",
+          "count": 2,
+          "text": "2安可"
+        },
+        {
+          "id": "DA_Frontman19",
+          "count": 2,
+          "text": "2主唱"
+        },
+        {
+          "id": "DA_Heartsteel19",
+          "count": 1,
+          "text": "1心之钢"
+        },
+        {
+          "id": "DA_Jazz19",
+          "count": 3,
+          "text": "3爵士乐"
+        },
+        {
+          "id": "DA_RnB19",
+          "count": 1,
+          "text": "1R&B"
+        },
+        {
+          "id": "DA_Virtuosos19",
+          "count": 4,
+          "text": "4古典乐"
+        }
+      ],
+      "options": 60
+    }
+  },
+  "errors": [],
+  "failures": []
+}
