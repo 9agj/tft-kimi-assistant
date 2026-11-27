@@ -32,6 +32,10 @@ execFileSync('tar', [
   '--exclude=tests/generated', '--exclude=docs/nginx-before.conf',
   '--exclude=tools/apply_patch',
   '--exclude=docs/screenshots/acceptance-failure.png',
+  // 公开归档白名单：交接/过程类内部件一律不进交付包
+  '--exclude=docs/交接文档_*', '--exclude=docs/交接辅助',
+  '--exclude=docs/基线对齐_*', '--exclude=docs/内部*',
+  '--exclude=*.idsig', '--exclude=*.jks', '--exclude=*.p12', '--exclude=signing.env',
   '-czf', path.join(root, 'out', archiveName), '-C', root,
   'frontend', 'android', 'server', 'tests', 'tools', 'docs',
 ])
