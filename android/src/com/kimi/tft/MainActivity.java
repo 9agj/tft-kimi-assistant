@@ -57,6 +57,7 @@ public final class MainActivity extends Activity {
             web.addJavascriptInterface(new Bridge(), "Kimi");
             setContentView(web);
             web.loadUrl(runtime.baseUrl());
+            UpdateCheck.check(this);
         } catch (Exception e) {
             android.widget.TextView error = new android.widget.TextView(this);
             error.setText("初始化出现问题：" + e.getMessage());
@@ -108,7 +109,7 @@ public final class MainActivity extends Activity {
     }
 
     public final class Bridge {
-        @JavascriptInterface public String getVersion() { return "1.2.2"; }
+        @JavascriptInterface public String getVersion() { String v = UpdateCheck.currentVersion(MainActivity.this); return v.isEmpty() ? "0.0.0" : v; }
         @JavascriptInterface public String getDataStatus() { return runtime.data.status(); }
         @JavascriptInterface public boolean hasOverlayPermission() { return Settings.canDrawOverlays(MainActivity.this); }
         @JavascriptInterface public void requestOverlayPermission() { runOnUiThread(() -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())))); }

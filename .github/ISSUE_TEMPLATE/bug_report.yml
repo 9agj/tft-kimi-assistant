@@ -1,0 +1,83 @@
+name: Bug 反馈
+description: 界面异常、数据错误、闪退或同步失败
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈。请尽量填全，方便定位问题。
+        提交前可以先看 [CHANGELOG](https://github.com/9agj/tft-kimi-assistant/blob/master/CHANGELOG.md) 里是否已经修复。
+  - type: input
+    id: app-version
+    attributes:
+      label: App 版本
+      description: 设置面板底部「App x.y.z」或系统应用信息里的版本号
+      placeholder: 1.2.3
+    validations:
+      required: true
+  - type: input
+    id: data-version
+    attributes:
+      label: 数据版本
+      description: 设置面板里的「数据版本」
+      placeholder: 20261127T000631-429
+    validations:
+      required: false
+  - type: dropdown
+    id: android-version
+    attributes:
+      label: Android 版本
+      options:
+        - Android 8
+        - Android 9
+        - Android 10
+        - Android 11
+        - Android 12
+        - Android 13
+        - Android 14
+        - Android 15
+        - Android 16
+        - 其他 / 不确定
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 机型
+      placeholder: 例如 小米 14 / 华为 Mate 60
+    validations:
+      required: false
+  - type: dropdown
+    id: area
+    attributes:
+      label: 出问题的位置
+      options:
+        - 阵容列表 / 阵容详情
+        - 强化符文页
+        - 英雄 / 装备 / 羁绊
+        - 悬浮窗
+        - 数据同步
+        - 设置面板
+        - 启动或闪退
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 问题描述
+      description: 做了什么、期望看到什么、实际看到什么
+      placeholder: |
+        1. 打开阵容详情 …
+        2. 点击 …
+        3. 实际显示 …，期望显示 …
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图或录屏
+      description: 直接拖进输入框即可
+    validations:
+      required: false

@@ -168,3 +168,10 @@ button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px 
 .comp-tier[data-tier='D'] { color: #d0d9e8; border-color: #69768a; background: #323e50; }
 @media(min-width:700px) { .kimi-main { max-width: 960px; width: 100%; margin: auto; } .kimi-header, .kimi-status-strip { width: min(960px, 100%); align-self: center; } .kimi-nav { justify-content: center; } .kimi-nav button { flex: 0 1 150px; } }
 @media(max-width:380px) { .kimi-header { padding: 14px 16px 9px; } .kimi-brand h1 { font-size: 18px; } .kimi-status-strip { padding-left: 16px; padding-right: 16px; gap: 8px; font-size: 10px; } .kimi-updated { font-size: 10px; } .kimi-comp-card { padding: 12px 9px !important; } }
+
+.kimi-feedback-card { border: 1px solid var(--line); border-radius: 14px; background: #1b2636; padding: 14px; margin: 4px 0 14px; }
+.kimi-feedback-card strong { font-size: 14px; font-weight: 600; color: #a6dfd3; }
+.kimi-feedback-card p { font-size: 12px; color: var(--text-secondary); line-height: 1.8; margin: 6px 0 10px; }
+.kimi-feedback-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.kimi-feedback-links a { flex: 1 1 auto; min-width: 96px; text-align: center; padding: 9px 12px; border-radius: 10px; border: 1px solid #35455b; background: #223047; color: #f1f5fb; font-size: 13px; text-decoration: none; }
+.kimi-feedback-links a:active { background: #2b3c56; }

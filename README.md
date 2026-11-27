@@ -8,9 +8,9 @@
 
 安装包统一发布在 [Releases](https://github.com/9agj/tft-kimi-assistant/releases)，版本说明见 [CHANGELOG.md](CHANGELOG.md)。本项目所有版本更新与更新日志都在 GitHub 维护。
 
-- 当前版本：v1.2.2（versionCode 5，minSdk 26 / targetSdk 34）
+- 当前版本：v1.2.3（versionCode 6，minSdk 26 / targetSdk 34）
 - 包名：`com.kimi.tft`
-- 安装包：[tft-kimi-assistant-v1.2.2.apk](https://github.com/9agj/tft-kimi-assistant/releases/download/v1.2.2/tft-kimi-assistant-v1.2.2.apk)
+- 安装包：[tft-kimi-assistant-v1.2.3.apk](https://github.com/9agj/tft-kimi-assistant/releases/download/v1.2.3/tft-kimi-assistant-v1.2.3.apk)
 
 ## 功能
 
@@ -143,3 +143,12 @@ location ^~ /tft-kimi/ {
 ## 许可证
 
 本项目代码以 MIT 协议发布，见 [LICENSE](LICENSE)。第三方数据与素材的归属见 [NOTICE](NOTICE)。
+
+## 反馈
+
+遇到 bug、数据错误，或想提新功能，都可以在 [Issues](https://github.com/9agj/tft-kimi-assistant/issues) 提交：
+
+- [提交 Bug](https://github.com/9agj/tft-kimi-assistant/issues/new?template=bug_report.yml)
+- [功能建议](https://github.com/9agj/tft-kimi-assistant/issues/new?template=feature_request.yml)
+
+App 内「设置 → 问题反馈与建议」有同样的入口。
