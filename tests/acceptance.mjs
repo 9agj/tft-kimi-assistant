@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import { chromium } from '../tools/node_modules/playwright/index.mjs'
 
-const ROOT = '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const base = process.env.TEST_BASE ?? 'http://127.0.0.1:8798/'
 const output = ROOT + '/docs/screenshots'
 await fs.mkdir(output, { recursive: true })

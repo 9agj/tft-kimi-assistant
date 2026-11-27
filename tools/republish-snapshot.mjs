@@ -7,7 +7,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 
-const ROOT = process.env.KIMI_ROOT || '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const SNAP = path.join(ROOT, 'data/snapshots')
 const arg = (k, d = null) => {
   const i = process.argv.indexOf('--' + k)

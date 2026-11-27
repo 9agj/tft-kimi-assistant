@@ -1,6 +1,6 @@
 {
-  "name": "tft-kimi",
-  "description": "tft-kimi 是一个基于 Electron 的云顶之弈桌面端助手",
+  "name": "tft-kimi-assistant",
+  "description": "tft基米助手 —— 云顶之弈阵容/强化/装备查询工具的界面与构建工程",
   "type": "module",
   "version": "0.7.0",
   "scripts": {
@@ -55,7 +55,7 @@
   },
   "packageManager": "pnpm@10.12.4",
   "bugs": {
-    "url": "https://github.com/upstream/repo/issues"
+    "url": "https://github.com/9agj/tft-kimi-assistant/issues"
   },
   "homepage": "https://tft.vinky.cn",
   "engines": {

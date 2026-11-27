@@ -3,15 +3,16 @@ Description=TFT Kimi S19 read-only data service
 After=network.target
 
 [Service]
+Environment=KIMI_ROOT=/opt/tft-kimi
 Type=simple
-WorkingDirectory=/root/tft-kimi
-ExecStart=/usr/bin/node /root/tft-kimi/server/http.mjs
+WorkingDirectory=/opt/tft-kimi
+ExecStart=/usr/bin/node /opt/tft-kimi/server/http.mjs
 Restart=on-failure
 RestartSec=5
 NoNewPrivileges=true
 ProtectSystem=strict
 PrivateTmp=true
-ReadOnlyPaths=/root/tft-kimi
+ReadOnlyPaths=/opt/tft-kimi
 
 [Install]
 WantedBy=multi-user.target

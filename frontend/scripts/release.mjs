@@ -327,7 +327,7 @@ async function main() {
     newline()
     info(`📌 版本: v${version}`)
     info('🔗 GitHub Actions 将自动构建并发布桌面应用')
-    info('🔗 查看构建进度: https://github.com/upstream/repo/actions')
+    info('🔗 查看构建进度: https://github.com/9agj/tft-kimi-assistant/actions')
     newline()
   }
   catch (err) {

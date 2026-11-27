@@ -24,7 +24,7 @@ export const useFavoritesStore = create<FavoritesState>()(
       isFavorite: (compId: string) => get().favorites.has(compId),
     }),
     {
-      name: 'tft-kimi-favorites',
+      name: 'kimi-favorites',
       storage: {
         getItem: (name) => {
           const str = localStorage.getItem(name)

@@ -36,7 +36,7 @@ export default function Home() {
             <div className="relative group">
               <Image
                 src='https://i.imgs.ovh/2025/11/14/CaAxWL.png'
-                alt="tft-kimi Logo"
+                alt="tft基米助手 Logo"
                 width={120}
                 height={120}
                 priority
@@ -47,7 +47,7 @@ export default function Home() {
           </div>
 
           <h1 className="mb-6 bg-linear-to-b from-white via-slate-100 to-slate-300 bg-clip-text text-center text-7xl sm:text-8xl leading-none font-bold whitespace-pre-wrap text-transparent animate-fade-in">
-            tft-kimi
+            tft基米助手
           </h1>
 
           <p className="text-center text-xl sm:text-2xl text-slate-300 mb-8 font-light animate-fade-in-up">
@@ -113,19 +113,19 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <Image
                 src='https://i.imgs.ovh/2025/11/14/CaAxWL.png'
-                alt="tft-kimi"
+                alt="tft基米助手"
                 width={32}
                 height={32}
                 className="rounded-lg"
                 unoptimized
               />
               <p className="text-sm text-slate-500">
-                © 2025 tft-kimi. All rights reserved.
+                © 2025 tft基米助手. All rights reserved.
               </p>
             </div>
             <div className="flex gap-8">
               <a
-                href="https://github.com/upstream/repo"
+                href="https://github.com/9agj/tft-kimi-assistant"
                 className="text-sm text-slate-400 transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -133,7 +133,7 @@ export default function Home() {
                 GitHub
               </a>
               <a
-                href="https://github.com/upstream/repo/releases"
+                href="https://github.com/9agj/tft-kimi-assistant/releases"
                 className="text-sm text-slate-400 transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -141,7 +141,7 @@ export default function Home() {
                 下载
               </a>
               <a
-                href="https://github.com/upstream/repo/issues"
+                href="https://github.com/9agj/tft-kimi-assistant/issues"
                 className="text-sm text-slate-400 transition-all duration-300 hover:scale-110"
                 target="_blank"
                 rel="noopener noreferrer"

@@ -89,7 +89,7 @@ export default function App() {
           <button className="kimi-primary" disabled={refreshing} onClick={refresh}><RefreshCw size={17} className={refreshing ? 'animate-spin' : ''} />{refreshing ? '校验并同步中…' : '检查并同步数据'}</button>
           {message && <p className="kimi-sync-message"><Check size={15} />{message}</p>}
           <div className="kimi-help-card"><Cat size={22} /><div><strong>阵容悬浮窗</strong><p>打开阵容详情 → 点「悬浮查看」。首次使用开启「显示在其他应用上层」，支持拖动、缩放、透明度和猫咪悬浮球。</p></div></div>
-          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.1'} · 基于 tft-kimi v0.7.0</p>
+          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.1'}</p>
         </div>
       </div>}
     </div>

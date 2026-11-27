@@ -1,7 +1,8 @@
+import os
 from pathlib import Path
 from PIL import Image, ImageOps, ImageFilter
 
-root = Path('/root/tft-kimi')
+root = Path(os.environ.get('KIMI_ROOT','/opt/tft-kimi'))
 source = Image.open(root / 'data/hachimi-original.png').convert('RGB')
 cat = ImageOps.fit(source, (512, 512), centering=(0.5, 0.40))
 art = root / 'android/assets/art'

@@ -111,7 +111,7 @@ export const useGlobalStore = create<GlobalState>()(
       },
     }),
     {
-      name: 'tft-kimi-global-storage',
+      name: 'kimi-global-storage',
       partialize: state => ({ curSeason: state.curSeason }),
     },
   ),

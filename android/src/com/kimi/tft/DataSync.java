@@ -12,7 +12,7 @@ import java.util.concurrent.*;
 import java.util.zip.*;
 
 public final class DataSync {
-    public static final String CLOUD = "https://panel.13-184-199-233.sslip.io/tft-kimi/";
+    public static final String CLOUD = CloudConfig.BASE;
     public interface Callback { void done(boolean changed, String message); }
     private final Context context;
     private final SharedPreferences prefs;

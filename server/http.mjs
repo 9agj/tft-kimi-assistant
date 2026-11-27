@@ -3,7 +3,7 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 import { createReadStream } from 'node:fs'
 
-const ROOT = process.env.KIMI_ROOT ?? '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT ?? '/opt/tft-kimi'
 const mime = { '.json': 'application/json', '.js': 'application/javascript', '.css': 'text/css', '.html': 'text/html; charset=utf-8', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.svg': 'image/svg+xml', '.zip': 'application/zip', '.apk': 'application/vnd.android.package-archive' }
 const server = http.createServer(async (req, res) => {
   try {

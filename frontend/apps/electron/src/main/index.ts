@@ -18,7 +18,7 @@ if (aptabaseCode) {
 
 app.whenReady().then(async () => {
   trackEvent('app_start')
-  electronApp.setAppUserModelId('com.tft-kimi.app')
+  electronApp.setAppUserModelId('com.kimi.tft.desktop')
   app.on('browser-window-created', (_, window) => {
     optimizer.watchWindowShortcuts(window)
   })

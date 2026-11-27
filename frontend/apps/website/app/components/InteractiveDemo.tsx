@@ -280,7 +280,7 @@ export function InteractiveDemo() {
               <div className="flex-1 flex items-center justify-center cursor-pointer">
                 <Image
                   src='https://i.imgs.ovh/2025/11/14/CaAxWL.png'
-                  alt="tft-kimi Logo"
+                  alt="tft基米助手 Logo"
                   className="w-full h-full object-contain p-0.5"
                   width={100}
                   height={100}

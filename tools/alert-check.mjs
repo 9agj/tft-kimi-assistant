@@ -6,7 +6,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { execFileSync } from 'node:child_process'
 
-const ROOT = process.env.KIMI_ROOT || '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const CONF = process.env.KIMI_ALERT_CONF || path.join(ROOT, 'config/alert.json')
 const STATE = path.join(ROOT, 'logs/alert-state.json')
 const OUTBOX = path.join(ROOT, 'logs/outbox')
@@ -19,7 +19,7 @@ const DEFAULTS = {
   scrapeStaleHours: 12,            // 4 小时一轮 × 3 轮未成功即告警
   certMinDays: 14,
   diskMaxPercent: 85,
-  certPath: '/etc/letsencrypt/live/panel.13-184-199-233.sslip.io/cert.pem',
+  certPath: process.env.KIMI_CERT_PATH || '/etc/letsencrypt/live/tft-kimi/cert.pem',
 }
 
 function loadConf() {

@@ -62,11 +62,11 @@ export async function checkForUpdate() {
     logger.info('正在检查更新...')
 
     if (process.platform === 'darwin') {
-      autoUpdater.setFeedURL({ provider: 'github', owner: 'VinkyDev', repo: 'tft-kimi' })
+      autoUpdater.setFeedURL({ provider: 'github', owner: '9agj', repo: 'tft-kimi-assistant' })
     }
 
     await autoUpdater.checkForUpdatesAndNotify({
-      title: 'tft-kimi 更新就绪',
+      title: 'tft基米助手 更新就绪',
       body: '新版本已下载完成，重启应用后生效',
     })
   }

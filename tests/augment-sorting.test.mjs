@@ -3,7 +3,7 @@ import test from 'node:test'
 import fs from 'node:fs/promises'
 import { createRequire } from 'node:module'
 
-const root = '/root/tft-kimi'
+const root = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const require = createRequire(root + '/frontend/package.json')
 const { build } = require('esbuild')
 await fs.mkdir(root + '/tests/generated', { recursive: true })

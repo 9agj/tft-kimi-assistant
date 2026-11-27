@@ -4,7 +4,7 @@ import path from 'node:path'
 import { createRequire } from 'node:module'
 import { chromium } from '../tools/node_modules/playwright/index.mjs'
 
-const ROOT = '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const BASE = process.env.TEST_BASE ?? 'http://127.0.0.1:8798/'
 const require = createRequire(ROOT + '/frontend/package.json')
 const { build } = require('esbuild')

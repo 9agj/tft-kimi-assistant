@@ -1,149 +1,68 @@
-# tft-kimi
+# frontend
 
-一个基于 React + Electron 的云顶之弈辅助应用，提供英雄、装备、羁绊、强化符文等数据的查询功能。
+`tft基米助手` 的界面与构建工程（pnpm workspace）。APK 里打包的是 `apps/react` 的构建产物，其余 app 是同一套工程内的配套应用。
 
-## 🏗️ 项目架构
+## 工作区结构
 
 ```
-tft-kimi/
-├── apps/
-│   ├── react/             # Web 应用 (React 19 + Vite)
-│   ├── electron/          # 桌面应用 (Electron 39)
-│   └── server/            # API 服务器 (Hono + Node.js)
-├── packages/
-│   ├── bridge/            # Electron IPC 通信层
-│   ├── crawler/           # Playwright 爬虫
-│   ├── db/                # MongoDB 数据库层
-│   ├── logger/            # 日志工具
-│   ├── react-helper/      # React 工具库
-│   ├── types/             # TypeScript 类型定义
-│   ├── ui/                # UI 组件库
-│   └── utils/             # 通用工具库
-└── scripts/               # 构建脚本
+apps/
+  react/     主界面（React 19 + Vite + TailwindCSS），构建产物进 android/assets/www
+  website/   官网（Next.js 静态导出）
+  electron/  桌面端外壳（Electron）
+  server/    可选的数据服务（Hono + MongoDB）
+packages/
+  types/ utils/ logger/ ui/ config/ react-helper/ api-client/ bridge/ crawler/ db/
 ```
 
-### 技术栈
+`apps/react` 不依赖 `server` / `db` / `crawler`，离线数据来自 APK 内置快照与云端同步。
 
-**前端**
-- React 19 + React Compiler
-- TailwindCSS + Shadcn UI
+## 环境要求
 
-**桌面端**
-- Electron 39
+- Node.js 22+
+- pnpm 10.12.4（`packageManager` 字段强制，`preinstall` 会拦截 npm / yarn）
 
-**服务端**
-- Hono
-- MongoDB
-- Playwright
-
-**构建工具**
-- Vite 7 (Web)
-- electron vite + electron-builder (Desktop)
-- tsup (Server)
-- rslib (Packages)
-
-## 🚀 快速开始
-
-### 安装依赖
+## 安装与构建
 
 ```bash
-# 首次安装（清理 + 安装依赖 + 构建包）
-pnpm run setup
+pnpm install --ignore-scripts --no-frozen-lockfile
 
-# 或仅安装依赖
-pnpm install
+pnpm run build:packages     # 按依赖顺序构建 packages
+pnpm run build:react        # 产物：apps/react/dist
 ```
 
-### 开发模式
+`build:packages` 的顺序由根 `package.json` 固定：`types` → `utils` → `logger` / `bridge` → `db` / `react-helper` / `api-client` → `crawler`。
+
+其他构建：
 
 ```bash
-# 启动 Web 应用
-pnpm dev:react
-
-# 启动桌面应用 (electron-vite 开发服务器)
-pnpm dev:electron
-
-# 启动桌面应用 (electron-vite + React 开发服务器)
-pnpm dev:desktop
-
-# 启动服务
-pnpm dev:server
+pnpm run build:website      # 静态导出到 apps/website/out
+pnpm run build:electron     # 桌面端
+pnpm run build:server       # 数据服务
 ```
 
-### 环境变量配置
-
-
-```env
-# 服务端环境变量
-MONGODB_URI=mongodb://xxx:xxx@xxx.xxx:xxx
-MONGODB_DB_NAME=tft-kimi
-CRAWLER_BASIC_DATA_ENABLED=true
-CRAWLER_BASIC_DATA_SCHEDULE=0 */4 * * *
-CRAWLER_COMPS_ENABLED=true
-CRAWLER_COMPS_SCHEDULE=5 */4 * * *
-CRAWLER_DETAILS_CONCURRENCY=5
-SEASONS=S15:1100,S16:PBE
-
-# 桌面端环境变量
-VITE_APTABASE_CODE=xxx # 用于 Aptabase 埋点
-```
-
-## 📦 构建部署
-
-### 桌面应用构建
+## 开发
 
 ```bash
-pnpm build:unpack
-pnpm build:win
-pnpm build:mac
-pnpm build:linux
+pnpm dev:react              # Vite dev server
+pnpm dev:website            # Next.js dev server
+pnpm dev:electron           # Electron
 ```
 
-### Web 应用构建
+## 质量检查
 
 ```bash
-pnpm build:react
+pnpm lint
+pnpm typecheck
+pnpm check                  # 两者并行
 ```
 
-构建产物位于 `apps/react/dist/` 目录。
+## 约定
 
-### Server 端部署
+- TypeScript strict，不用 `any`；无法避免时用 `unknown` 再收窄
+- 优先复用 `packages/utils` 与现有依赖，不重复造轮子
+- 注释写"为什么"，不写"是什么"
+- 状态管理用 Zustand，路由集中在 `apps/react/src/routes.tsx`
 
-#### 自动部署（Docker）
+## 与 APK 的关系
 
-推送到 `main` 分支或创建版本标签会自动触发 GitHub Actions 构建并推送 Docker 镜像：
-
-```bash
-# 推送到 main 分支
-git push origin main
-
-# 或创建版本标签
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-#### 部署
-
-```bash
-# 1. 构建
-pnpm build:packages
-pnpm build:server
-
-# 2. 启动
-cd apps/server
-pnpm start
-```
-
-#### Docker 部署
-
-```bash
-# 拉取镜像
-docker pull <your-dockerhub-username>/tft-kimi-server:latest
-
-# 运行容器
-docker run -d \
-  -p 3000:3000 \
-  -e MONGODB_URI=mongodb://host.docker.internal:27017/tft-kimi \
-  --name tft-kimi-server \
-  <your-dockerhub-username>/tft-kimi-server:latest
-```
+`pnpm run build:react` 产出 `apps/react/dist`，由仓库根的 `tools/prepare_assets.mjs` 复制到 `android/assets/www`，再随 `android/build.sh` 打进 APK。

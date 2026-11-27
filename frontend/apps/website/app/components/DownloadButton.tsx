@@ -20,8 +20,8 @@ interface NavigatorUAData {
   getHighEntropyValues(hints: string[]): Promise<{ architecture?: string }>;
 }
 
-const MINIO_BASE = "https://objectstorageapi.gzg.sealos.run/ggr87o43-tft-kimi/releases";
-const GITHUB_RELEASES = "https://github.com/upstream/repo/releases";
+const MINIO_BASE = "https://objectstorageapi.gzg.sealos.run/ggr87o43-tftkimi/releases";
+const GITHUB_RELEASES = "https://github.com/9agj/tft-kimi-assistant/releases";
 
 const PLATFORM_META: Record<Platform, { icon: ReactNode; label: (arch: Arch) => string }> = {
   Windows: {
@@ -128,7 +128,7 @@ function InstallTip({ platform }: { platform: Platform }) {
         <div className="mt-2 p-3 rounded-lg bg-slate-800/50 border border-slate-700/50 text-xs text-slate-400 max-w-xs mx-auto">
           <p className="mb-2">在终端运行以下命令：</p>
           <code className="block p-2 rounded bg-slate-900/50 text-slate-300 text-[10px] break-all">
-            sudo xattr -r -d com.apple.quarantine /Applications/tft-kimi.app
+            sudo xattr -r -d com.apple.quarantine /Applications/tft-kimi-assistant.app
           </code>
         </div>
       )}

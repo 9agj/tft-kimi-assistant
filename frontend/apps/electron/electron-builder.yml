@@ -1,5 +1,5 @@
-appId: com.tft-kimi.app
-productName: tft-kimi
+appId: com.kimi.tft.desktop
+productName: tft-kimi-assistant
 directories:
   buildResources: build
 files:
@@ -15,12 +15,12 @@ asarUnpack:
 
 publish:
   provider: generic
-  url: https://objectstorageapi.gzg.sealos.run/ggr87o43-tft-kimi/releases
+  url: https://objectstorageapi.gzg.sealos.run/ggr87o43-tftkimi/releases
 
 icon: resources/icons/png/1024x1024.png
 win:
   icon: resources/icons/win/icon.ico
-  executableName: tft-kimi
+  executableName: tft-kimi-assistant
   target:
     - target: nsis
       arch:

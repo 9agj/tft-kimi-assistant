@@ -3,7 +3,7 @@ import path from 'node:path'
 import crypto from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 
-const root = '/root/tft-kimi'
+const root = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const apkName = 'tft基米助手-v1.2.1.apk'
 const archiveName = 'tft-kimi-source-v1.2.1.tar.gz'
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex')
@@ -23,7 +23,7 @@ const release = {
   cloud: { version: current.version, durationSeconds: current.durationSeconds, schedule: current.schedule },
 }
 await fs.writeFile(path.join(root, 'docs/release-info.json'), JSON.stringify(release, null, 2))
-await fs.writeFile(path.join(root, 'out/release.json'), JSON.stringify({ ...release, apkUrl: 'https://panel.13-184-199-233.sslip.io/tft-kimi/apk/' + encodeURIComponent(apkName) }, null, 2))
+await fs.writeFile(path.join(root, 'out/release.json'), JSON.stringify({ ...release, apkUrl: (process.env.KIMI_PUBLIC_BASE || 'https://example.com/tft-kimi/') + 'apk/' + encodeURIComponent(apkName) }, null, 2))
 await fs.writeFile(path.join(root, 'out', apkName + '.sha256'), sha(apk) + '  ' + apkName + '\n')
 execFileSync('tar', [
   '--exclude=node_modules', '--exclude=.git', '--exclude=.env', '--exclude=.env.*',

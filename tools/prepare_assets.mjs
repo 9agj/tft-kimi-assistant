@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
-const root = '/root/tft-kimi'
+const root = process.env.KIMI_ROOT || '/opt/tft-kimi'
 const assets = path.join(root, 'android/assets')
 const oldApi = path.join(assets, 'api')
 await fs.mkdir(path.join(root, 'backup'), { recursive: true })

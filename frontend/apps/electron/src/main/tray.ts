@@ -33,7 +33,7 @@ export function createTray(): void {
   tray = new Tray(icon)
 
   // 设置托盘工具提示
-  tray.setToolTip('tft-kimi')
+  tray.setToolTip('tft基米助手')
 
   // 创建上下文菜单
   const contextMenu = Menu.buildFromTemplate([

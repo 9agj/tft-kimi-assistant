@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "tft-kimi - 云顶之弈数据助手",
+  title: "tft基米助手 - 云顶之弈数据助手",
   description: "一站式云顶之弈数据查询平台，提供英雄、装备、羁绊、强化符文等全方位数据支持，助你在战场上所向披靡",
   keywords: ["云顶之弈", "TFT", "数据助手", "英雄数据", "装备合成", "羁绊系统", "强化符文"],
   authors: { name: "VinkyDev" },
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     icon: 'https://i.imgs.ovh/2025/11/14/CaAxWL.png',
   },
   openGraph: {
-    title: "tft-kimi - 云顶之弈数据助手",
+    title: "tft基米助手 - 云顶之弈数据助手",
     description: "一站式云顶之弈数据查询平台，提供英雄、装备、羁绊、强化符文等全方位数据支持",
     type: "website",
   },

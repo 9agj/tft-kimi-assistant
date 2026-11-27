@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -u
-ROOT=${KIMI_ROOT:-/root/tft-kimi}
+ROOT=${KIMI_ROOT:-/opt/tft-kimi}
 SDK=${SDK:-/root/android-sdk}
 BT="$SDK/build-tools/35.0.0"
 JAR="$SDK/platforms/android-34/android.jar"
@@ -25,6 +25,18 @@ mkdir -p "$WORK/compiled" "$WORK/gen" "$WORK/classes" "$WORK/dex"
 printf 'Android resources\n'
 "$BT/aapt2" compile --dir "$SRC/res" -o "$WORK/compiled/res.zip" || fail resources
 "$BT/aapt2" link -o "$WORK/base.apk" -I "$JAR" --manifest "$SRC/AndroidManifest.xml" -R "$WORK/compiled/res.zip" --java "$WORK/gen" -A "$SRC/assets" --auto-add-overlay || fail link
+CLOUD_URL=${KIMI_CLOUD_URL:-https://example.com/tft-kimi/}
+case "$CLOUD_URL" in */) ;; *) CLOUD_URL="$CLOUD_URL/" ;; esac
+mkdir -p "$WORK/gen/com/kimi/tft"
+cat > "$WORK/gen/com/kimi/tft/CloudConfig.java" <<EOF
+package com.kimi.tft;
+
+final class CloudConfig {
+    static final String BASE = "$CLOUD_URL";
+
+    private CloudConfig() {}
+}
+EOF
 printf 'Java and dex\n'
 find "$SRC/src" "$WORK/gen" -name '*.java' > "$WORK/sources.txt"
 javac -encoding UTF-8 --release 8 -nowarn -classpath "$JAR" -d "$WORK/classes" @"$WORK/sources.txt" || fail javac

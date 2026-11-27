@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process'
 import { requireSet, transformComps, transformDetail, transformCatalog, deriveUnitItems } from './model.mjs'
 import { transformAugmentRanking, emptyAugmentRanking, AUGMENT_RANKING_URL } from './augment-ranking.mjs'
 
-const ROOT = process.env.KIMI_ROOT ?? '/root/tft-kimi'
+const ROOT = process.env.KIMI_ROOT ?? '/opt/tft-kimi'
 const DATA = path.join(ROOT, 'data')
 const BASE = 'https://api-hc.metatft.com'
 const CDN = path.join(ROOT, 'android/assets/cdn/file/metatft')

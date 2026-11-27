@@ -4,8 +4,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
+Environment=KIMI_ROOT=/opt/tft-kimi
 Type=oneshot
-WorkingDirectory=/root/tft-kimi
-ExecStart=/usr/bin/flock -n /root/tft-kimi/data/scrape.lock /usr/bin/node /root/tft-kimi/server/scrape.mjs
+WorkingDirectory=/opt/tft-kimi
+ExecStart=/usr/bin/flock -n /opt/tft-kimi/data/scrape.lock /usr/bin/node /opt/tft-kimi/server/scrape.mjs
 TimeoutStartSec=30min
 Nice=10
