@@ -2,6 +2,17 @@
 
 本项目自 v1.2.2 起在 GitHub 发布，版本说明与安装包统一在本页与 Releases 中维护。
 
+## v1.2.7 — 2026-11-27
+
+### 修复
+- **装备图标全部裂图**：v1.2.6 把资源修剪改成「只按 `localIcon` 保留」，但装备/英雄/羁绊三个页面是按 `apiName` 拼路径的（`Item.tsx:23`、`Champion.tsx:11`、`Trait.tsx:20`），两套命名不一致的文件被误删
+- 修剪改回并集：`apiName` 与 `localIcon` 两套命名都保留
+- 数据里 `apiName` 与 `localIcon` 不同名时，构建期补一份 `apiName` 命名的副本（4 件特殊装备靠这个补上）
+
+### 验证
+- 服务器侧按 `apiName` 核对：英雄 126/126、装备 159/159、羁绊 50/50，缺失 0
+- 真机实测：`da_chaliceofpower.png` → 200 image/webp 2328、`da_randuinsomen.png` → 200 4724、`da_akali_truedamage19_uniquetrait.png` → 200 1906
+
 ## v1.2.6 — 2026-11-27
 
 ### 修复

@@ -26,9 +26,22 @@ for (const [cat, rows] of [['champions',lk.units],['items',lk.items],['augments'
   const dir = path.join(assets, 'cdn/file/metatft', cat)
   const allowed = new Set()
   const add = (n) => { allowed.add(n); allowed.add(n.replace(/\.png$/, '.webp')) }
+  // 组件按 apiName 拼路径（Item/Champion/Trait），数据按 localIcon 引用（Augment），两套都要留
+  for (const x of rows) if (x.apiName) add(x.apiName.toLowerCase() + '.png')
   for (const row of rows) if (row.localIcon?.startsWith('/cdn/')) add(path.basename(row.localIcon))
-  for (const x of rows) if (!x.localIcon && x.apiName) add(x.apiName.toLowerCase() + '.png')
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) if (entry.isFile() && !allowed.has(entry.name)) await fs.rm(path.join(dir, entry.name))
+  // apiName 与 localIcon 不同名时，补一份 apiName 命名的副本，避免组件取不到图
+  for (const row of rows) {
+    const api = (row.apiName || '').toLowerCase()
+    if (!api || !row.localIcon?.startsWith('/cdn/')) continue
+    const dst = path.join(dir, api + '.webp')
+    if (await fs.stat(dst).catch(() => null)) continue
+    const srcBase = path.join(assets, row.localIcon.replace(/^\//, '')).replace(/\.png$/, '')
+    for (const ext of ['.webp', '.png']) {
+      const src = srcBase + ext
+      if (await fs.stat(src).catch(() => null)) { await fs.copyFile(src, dst); break }
+    }
+  }
 }
 const dist = path.join(root, 'frontend/apps/react/dist')
 const www = path.join(assets,'www')
