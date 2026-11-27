@@ -39,7 +39,7 @@ function image(category: string, id: string, name?: string) {
   const img = node('img')
   img.loading = 'lazy'; img.alt = name || id; img.draggable = false
   img.src = new URL('./cdn/file/metatft/' + category + '/' + id.toLowerCase() + '.png', document.baseURI).href
-  img.addEventListener('error', () => { img.src = new URL('./art/hachimi.png', document.baseURI).href }, { once: true })
+  img.addEventListener('error', () => { img.src = new URL('./art/hachimi.webp', document.baseURI).href }, { once: true })
   return img
 }
 function unit(id: string) {

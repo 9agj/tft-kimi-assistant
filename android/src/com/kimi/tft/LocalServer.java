@@ -61,7 +61,12 @@ public final class LocalServer {
             } else {
                 String asset = p.startsWith("/cdn/") || p.startsWith("/art/") ? p.substring(1) : "www" + p;
                 bytes = readAsset(asset);
-                if (bytes == null && p.startsWith("/cdn/") && p.endsWith(".png")) bytes = readAsset("art/hachimi.png");
+                if (bytes == null && asset.endsWith(".png")) {
+                    String webp = asset.substring(0, asset.length() - 4) + ".webp";
+                    bytes = readAsset(webp);
+                    if (bytes != null) resolved = webp;
+                }
+                if (bytes == null && p.startsWith("/cdn/") && p.endsWith(".png")) bytes = readAsset("art/hachimi.webp");
             }
             if (bytes == null) { reply(client, 404, "application/json", "{\"success\":false,\"message\":\"Resource not found\"}".getBytes("UTF-8"), false); return; }
             reply(client, 200, mime(resolved), bytes, method.equals("HEAD"));

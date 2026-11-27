@@ -56,7 +56,7 @@ export default function App() {
       <div className="kimi-wallpaper" aria-hidden="true" style={{ backgroundImage: `linear-gradient(135deg,#111722f5,#152030f7),url(${new URL('./art/hachimi-background.webp', document.baseURI).href})` }} />
       <header className="kimi-header">
         <div className="kimi-brand">
-          <img src="./art/hachimi.png" alt="哈基米" className="kimi-avatar" />
+          <img src="./art/hachimi.webp" alt="哈基米" className="kimi-avatar" />
           <div><h1>tft基米助手</h1><p>为每一局，备好答案。</p></div>
         </div>
         <button className="kimi-icon-button" onClick={() => setSettings(true)} aria-label="设置与数据更新"><Settings2 size={20} /></button>
@@ -98,7 +98,7 @@ export default function App() {
               <a href="https://github.com/9agj/tft-kimi-assistant/issues" target="_blank" rel="noreferrer">全部反馈</a>
             </div>
           </div>
-          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.3'}</p>
+          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.4'}</p>
         </div>
       </div>}
     </div>

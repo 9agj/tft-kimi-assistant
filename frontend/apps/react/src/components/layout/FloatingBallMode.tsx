@@ -2,7 +2,7 @@ import { useMemoizedFn } from 'ahooks'
 import { Overlay, Window } from 'bridge'
 import { useState } from 'react'
 
-import logo from '@/assets/logo.png'
+import logo from '@/assets/logo.webp'
 import { useDraggable } from '@/hooks'
 import { useConfigStore } from '@/store/configStore'
 
