@@ -92,7 +92,7 @@ export default function App() {
           <div className="kimi-update-card">
             <div>
               <strong>版本与更新</strong>
-              <p>当前版本 {window.Kimi?.getVersion?.() || '1.2.5'}。启动时会自动检查一次，也可以手动点右侧按钮。</p>
+              <p>当前版本 {window.Kimi?.getVersion?.() || '1.2.6'}。启动时会自动检查一次，也可以手动点右侧按钮。</p>
             </div>
             <button type="button" className="kimi-update-btn" onClick={() => window.Kimi?.checkUpdate?.()}>检查更新</button>
           </div>
@@ -105,7 +105,7 @@ export default function App() {
               <a href="https://github.com/9agj/tft-kimi-assistant/issues" target="_blank" rel="noreferrer">全部反馈</a>
             </div>
           </div>
-          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.5'}</p>
+          <p className="kimi-footnote">银色／金色／棱彩阶位来自 MetaTFT 的 S19 数据。符文按官网 SABCD 分级，组内按阶位和名称排序，支持阶段筛选；暂用榜来源会在符文页注明。缺失站位或过渡数据会明确标记。App {window.Kimi?.getVersion() || '1.2.6'}</p>
         </div>
       </div>}
     </div>

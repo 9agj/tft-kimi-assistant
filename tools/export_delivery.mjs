@@ -4,8 +4,8 @@ import crypto from 'node:crypto'
 import { execFileSync } from 'node:child_process'
 
 const root = process.env.KIMI_ROOT || '/opt/tft-kimi'
-const apkName = 'tft基米助手-v1.2.5.apk'
-const archiveName = 'tft-kimi-source-v1.2.5.tar.gz'
+const apkName = 'tft基米助手-v1.2.6.apk'
+const archiveName = 'tft-kimi-source-v1.2.6.tar.gz'
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex')
 const apk = await fs.readFile(path.join(root, 'out', apkName))
 const acceptance = JSON.parse(await fs.readFile(path.join(root, 'docs/acceptance-results.json'), 'utf8'))
@@ -14,7 +14,7 @@ if (!acceptance.ok || !visual.ok) throw new Error('Acceptance must pass before d
 const bundled = JSON.parse(await fs.readFile(path.join(root, 'android/assets/api/manifest.json'), 'utf8'))
 const current = JSON.parse(await fs.readFile(path.join(root, 'data/current/manifest.json'), 'utf8'))
 const release = {
-  app: 'tft基米助手', package: 'com.kimi.tft', version: '1.2.5', versionCode: 8,
+  app: 'tft基米助手', package: 'com.kimi.tft', version: '1.2.6', versionCode: 9,
   generatedAt: new Date().toISOString(),
   apk: { file: apkName, size: apk.length, sha256: sha(apk) },
   certificateSha256: '5a5e99f2f6b7c2d273f2507cea33380ef41675f8ff45a9cc135afb27757ffd0d',

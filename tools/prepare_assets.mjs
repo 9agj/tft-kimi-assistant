@@ -24,8 +24,10 @@ await fs.copyFile(path.join(snapshot, 'manifest.json'), path.join(oldApi, 'manif
 const lk = JSON.parse(await fs.readFile(path.join(oldApi, 'lookups.json'), 'utf8')).data
 for (const [cat, rows] of [['champions',lk.units],['items',lk.items],['augments',lk.augments]]) {
   const dir = path.join(assets, 'cdn/file/metatft', cat)
-  const allowed = new Set(rows.map(x => x.apiName.toLowerCase() + '.png'))
-  for (const row of rows) if (row.localIcon?.startsWith('/cdn/')) allowed.add(path.basename(row.localIcon))
+  const allowed = new Set()
+  const add = (n) => { allowed.add(n); allowed.add(n.replace(/\.png$/, '.webp')) }
+  for (const row of rows) if (row.localIcon?.startsWith('/cdn/')) add(path.basename(row.localIcon))
+  for (const x of rows) if (!x.localIcon && x.apiName) add(x.apiName.toLowerCase() + '.png')
   for (const entry of await fs.readdir(dir, { withFileTypes: true })) if (entry.isFile() && !allowed.has(entry.name)) await fs.rm(path.join(dir, entry.name))
 }
 const dist = path.join(root, 'frontend/apps/react/dist')

@@ -66,7 +66,6 @@ public final class LocalServer {
                     bytes = readAsset(webp);
                     if (bytes != null) resolved = webp;
                 }
-                if (bytes == null && p.startsWith("/cdn/") && p.endsWith(".png")) bytes = readAsset("art/hachimi.webp");
             }
             if (bytes == null) { reply(client, 404, "application/json", "{\"success\":false,\"message\":\"Resource not found\"}".getBytes("UTF-8"), false); return; }
             reply(client, 200, mime(resolved), bytes, method.equals("HEAD"));
