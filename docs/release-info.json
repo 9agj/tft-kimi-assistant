@@ -1,13 +1,13 @@
 {
   "app": "tft基米助手",
   "package": "com.kimi.tft",
-  "version": "1.2.1",
-  "versionCode": 4,
-  "generatedAt": "2026-11-27T03:31:00.000Z",
+  "version": "1.2.2",
+  "versionCode": 5,
+  "generatedAt": "2026-11-27T03:40:00.000Z",
   "apk": {
-    "file": "tft基米助手-v1.2.1.apk",
+    "file": "tft基米助手-v1.2.2.apk",
     "size": 12148568,
-    "sha256": "dbdd95817af147570faa0d101a942c0bd249b0882a05c480326d6b4e6ddc0408"
+    "sha256": "6386d17ce61d19c2f3308ee4e3453c34c4b2b2aa1b42f6521f1c9a3b372475cd"
   },
   "certificateSha256": "5a5e99f2f6b7c2d273f2507cea33380ef41675f8ff45a9cc135afb27757ffd0d",
   "tests": {

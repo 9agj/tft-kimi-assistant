@@ -108,7 +108,7 @@ public final class MainActivity extends Activity {
     }
 
     public final class Bridge {
-        @JavascriptInterface public String getVersion() { return "1.2.1"; }
+        @JavascriptInterface public String getVersion() { return "1.2.2"; }
         @JavascriptInterface public String getDataStatus() { return runtime.data.status(); }
         @JavascriptInterface public boolean hasOverlayPermission() { return Settings.canDrawOverlays(MainActivity.this); }
         @JavascriptInterface public void requestOverlayPermission() { runOnUiThread(() -> startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + getPackageName())))); }

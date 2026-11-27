@@ -8,9 +8,9 @@
 
 安装包统一发布在 [Releases](https://github.com/9agj/tft-kimi-assistant/releases)，版本说明见 [CHANGELOG.md](CHANGELOG.md)。本项目所有版本更新与更新日志都在 GitHub 维护。
 
-- 当前版本：v1.2.1（versionCode 4，minSdk 26 / targetSdk 34）
+- 当前版本：v1.2.2（versionCode 5，minSdk 26 / targetSdk 34）
 - 包名：`com.kimi.tft`
-- 安装包：[tft-kimi-assistant-v1.2.1.apk](https://github.com/9agj/tft-kimi-assistant/releases/download/v1.2.1/tft-kimi-assistant-v1.2.1.apk)
+- 安装包：[tft-kimi-assistant-v1.2.2.apk](https://github.com/9agj/tft-kimi-assistant/releases/download/v1.2.2/tft-kimi-assistant-v1.2.2.apk)
 
 ## 功能
 
