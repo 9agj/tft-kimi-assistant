@@ -1,4 +1,4 @@
-import type { FinalCompTabProps, GuideTabProps, HeroesTabProps, ItemsTabProps, OverviewTabProps, TransitionTabProps } from './components'
+import type { FinalCompTabProps, GuideTabProps, HeroesBuildTabProps, HeroesTabProps, ItemsTabProps, OverviewTabProps, TransitionTabProps } from './components'
 import type { EnhancedCompData } from '@/utils/compRating'
 import { getCompDetails, getDatatft } from 'api-client'
 import { useMemo, useState } from 'react'
@@ -10,7 +10,7 @@ import {
   ItemsGridSkeleton,
 } from '@/components'
 import { useConfigStore } from '@/store/configStore'
-import { FinalCompTab, GuideTab, HeroesTab, ItemsTab, LazyTabContent, OverviewTab, TransitionTab } from './components'
+import { FinalCompTab, GuideTab, HeroesBuildTab, HeroesTab, ItemsTab, LazyTabContent, OverviewTab, TransitionTab } from './components'
 
 interface CompDetailContentProps {
   comp: EnhancedCompData | null
@@ -105,10 +105,10 @@ export function CompDetailContent({ comp }: CompDetailContentProps) {
           value: 'heroes',
           label: '英雄',
           content: (
-            <LazyTabContent<HeroesTabProps>
+            <LazyTabContent<HeroesBuildTabProps>
               shouldRender
-              component={HeroesTab}
-              props={{ items: data.item ?? [] }}
+              component={HeroesBuildTab}
+              props={{ builds: data.builds ?? [] }}
               fallback={<ItemsGridSkeleton />}
             />
           ),

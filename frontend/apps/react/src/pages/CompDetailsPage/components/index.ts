@@ -4,6 +4,7 @@ import { retryLoadWithFallBack } from 'utils'
 export type { FinalCompTabProps } from './FinalCompTab/index'
 export type { GuideTabProps } from './GuideTab/index'
 export type { HeroesTabProps } from './HeroesTab/index'
+export type { HeroesBuildTabProps } from './HeroesBuildTab/index'
 export type { ItemsTabProps } from './ItemsTab/index'
 
 export { LazyTabContent } from './LazyTabContent'
@@ -17,6 +18,10 @@ export const FinalCompTab = lazy(() => retryLoadWithFallBack({
 
 export const GuideTab = lazy(() => retryLoadWithFallBack({
   fn: () => import('./GuideTab/index'),
+}))
+
+export const HeroesBuildTab = lazy(() => retryLoadWithFallBack({
+  fn: () => import('./HeroesBuildTab/index').then(m => ({ default: m.HeroesBuildTab })),
 }))
 
 export const HeroesTab = lazy(() => retryLoadWithFallBack({
